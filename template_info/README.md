@@ -5,18 +5,22 @@
 
 이는 다음의 주제가 존재한다.
 
-## 목록
+## 📌 목록
 
-- [AWSTemplateFormatVersion](#awstemplateformatversion)
-- [Description](#description)
-- [Metadata](#metadata)
-- [Parameters](#parameters)
-- [Mappings](#mappings)
-- [Resources](#resources)
-- [이미 존재하는 Stack 참조](#이미-존재하는-stack-참조)
-- [AWS pseudo parameters](#aws-pseudo-parameters)
+📌 [AWSTemplateFormatVersion](#-awstemplateformatversion)
+📌 [Description](#-description)
+📌 [Metadata](#-metadata)
+📌 [Parameters](#-parameters)
+📌 [Mappings](#-mappings)
+📌 [Conditions](#-conditions)
+📌 [Transform](#-transform)
+📌 [Resources](#-resources)
+📌 [이미 존재하는 Stack 참조](#-이미-존재하는-stack-참조)
+📌 [AWS pseudo parameters](#-aws-pseudo-parameters)
+📌 [Parameter Store 와 Secerts Manager](#-parameter-store-와-secrets-manager)
+📌 [CloudFormation Language Extensions](#-cloudformaion-language-extentions)
 
-## AWSTemplateFormatVersion
+## 📌 AWSTemplateFormatVersion
 
 **_Not Required_**
 
@@ -28,7 +32,11 @@
 
 그러므로, 꼭 작성하지 않아도 되며, 작성하지 않을시 자동적으로 기본 포멧 버전을 사용한다.
 
-## Description
+```yml
+AWSTemplateFormatVersion: 2010-09-09
+```
+
+## 📌 Description
 
 **_Not Required_**
 
@@ -48,7 +56,7 @@ Description: >
     - RouteTables
 ```
 
-## Metadata
+## 📌 Metadata
 
 메타데이터 섹션은 추가적인 구성 기능을 제공한다.
 다음처럼 사용가능한데, 이는 나중에 살펴보도록 한다.
@@ -57,7 +65,7 @@ Description: >
 - `AWS::CloudFormation::Interface`
 - `AWS::CloudFormation::Designer`
 
-## Parameters
+## 📌 Parameters
 
 **_Not Required_**
 
@@ -86,7 +94,7 @@ Resources:
 `Stack` 생성시 사용자 요구에 따라 동적으로 생성가능하도록 구성할수 있다.
 이는 꽤나 다양하게 설정가능한데, 다음의 타입과 속성을 제공한다.
 
-### Parameters 타입
+### :eyes: Parameters 타입
 
 **_Not Required_**
 
@@ -99,7 +107,7 @@ Resources:
 | AWS 특정 파라미터 type       | `AWS` 관련 파라미터 타입                                                                                                                                                       |
 | System Manager 파라미테 type | `Systems Manager Parameter` 타입 참조                                                                                                                                          |
 
-### Parameters 속성
+### 👀Parameters 속성
 
 `Parameters` 에서 제공하는 속성들.
 
@@ -231,7 +239,7 @@ Outputs:
 
 이 같은경우, `DBPassword` `Parameter` 는 `CloudFormation` 의 `cli` 혹은, 콘솔상에 마스킹되어 노출되지 않는다.
 
-## Mappings
+## 📌 Mappings
 
 **_Not Required_**
 
@@ -241,7 +249,7 @@ Outputs:
 
 이렇게 미리 작성된 변수를 사용하기 위한 역할로써 제공된다.
 
-### Fn::FindInMap
+### 👀Fn::FindInMap
 
 `Fn::Ref` 함수를 사용하여 값을 얻는 `Parameters` 와 달리,  
 `Fn::FindInMap` 함수를 사용하여 값을 얻을수 있다.
@@ -290,7 +298,7 @@ Resources:
 `Fn::FindInMap` 은 `MapName`, `TopLevelKey`, `SecondLevelKey` 로 해당하는 값을 찾아 할당한다.
 `Mappings` 는 변경되지 않는 상수값을 지정하는 형식이라고 보면 된다.
 
-## Conditions
+## 📌 Conditions
 
 **_Not Required_**
 
@@ -298,10 +306,9 @@ Resources:
 `Conditions` 는 `true` 혹은 `false` 값을 받는데,  
 이를 통해 해당 `resource` 를 사용할지 안할지를 결정할수 있다.
 
-> `Conditions` 에서 `Boolean` 값을 받아 처리한다고 해서, 수동으로 `true` 나 `false` 를 선언하지  
-> 않아야 한다.
+> `Conditions` 에서 `Boolean` 값을 받아 처리한다고 해서, 수동으로 `true` 나 `false` 를 선언하지 않아야 한다.
 >
-> 반드시, [Fn::Equals](#fnequals), [Fn::If](#fnif), [Fn::Not](#fnnot), [Fn::And](#fnand), [Fn:Or](#fnor), 같은 조건을 정의하는 함수를 통해 비교하여 만들어지 값이어야 한다.
+> 반드시, [Fn::Equals](#eyes-fnequals), [Fn::If](#-fnif), [Fn::Not](#eyes-fnnot), [Fn::And](#eyes-fnand), [Fn:Or](#eyes-fnor), 같은 조건을 정의하는 함수를 통해 비교하여 만들어지 값이어야 한다.
 
 ```yml
 AWSTemplateFormatVersion: '2010-09-09'
@@ -324,7 +331,7 @@ Resources:
 
 그렇지 않다면, `false` 가 되어 `Budket` 은 생성되지 않는다.
 
-### Fn::Equals
+### :eyes: Fn::Equals
 
 첫번째 값이, 두번째 값과 같은지 확인 맞으면 `true`, 아니면 `false`
 
@@ -333,7 +340,7 @@ Conditions:
   IsProd: !Equals [!Ref Env, 'prod']
 ```
 
-### Fn::If
+### 👀 Fn::If
 
 첫번째 값이 `true` 이면, 두번째값, 아니면 세번째값
 
@@ -362,7 +369,7 @@ Resources:
                 InstanceType: !If [!Ref IsProd, 'm5.large', 't3.micro']
 ```
 
-### Fn::Not
+### :eyes: Fn::Not
 
 들어간 값이 `true` 면 `false` 로 부정.
 `false` 면 `true` 로 반환
@@ -374,7 +381,7 @@ Conditions:
 
 위는 `Fn::Equals` 의 부정을 나타낸다.
 
-### Fn::Or
+### :eyes: Fn::Or
 
 주어진 조건중 하나라도 `true` 이면, `true` 아니면, `false`
 
@@ -394,7 +401,7 @@ Conditions:
         # 아니면 false
 ```
 
-### Fn::And
+### :eyes: Fn::And
 
 주어진 조건중 하나라도 `false` 이면 `false`, 전부다 `true` 이면 `true`
 
@@ -418,12 +425,21 @@ Conditions:
     # 아니면 false
 ```
 
-## Transform
+## 📌 Transform
 
 `CloudFormation` 에서 특정 `Macro` 를 실행하려고할때 선언된다.
-이는 특수한 부분이므로, 추후 설명한다.
+이는 특수한 부분이며, 자세한 내용은 [Cloudformation-language-extensions](#-cloudformaion-language-extentions) 에서 확인가능하다.
 
-## Resources
+`Transform` 선언은 최상위 섹션으로 다음처럼 선언된다.
+
+```yml
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::LanguageExtentions
+Resources:
+    # and so on...
+```
+
+## 📌 Resources
 
 **_Required_**
 
@@ -434,7 +450,7 @@ Conditions:
 
 > 양이 많다..
 
-### Resources 의 Attributes
+### :eyes: Resources 의 Attributes
 
 여기서는 `Resources` 속서에 대한 개요만 살펴본다.
 
@@ -444,16 +460,16 @@ Conditions:
 
 - **DependsOn**: 직접 종속성을 추가한다.
 
-- [CreationPolicy](#): `Stack` 에서 해당하는 `resource` 가 정상적으로 생성되었음을 확인하여,  
+- **CreationPolicy**: `Stack` 에서 해당하는 `resource` 가 정상적으로 생성되었음을 확인하여,  
      이 조건이 충족될때까지 기다리도록 한다.  
      즉, **_`resource` 의 `완료 신호`(`success signal`)_** 을 기다린다.
 
-- [DeletionPolicy](#deletionpolicy): `Stack` 에서 해당하는 `resource` 를 삭제할때 `CloudFormation` 이 `Resource` 를  
+- [DeletionPolicy](#eyes-deletionpolicy): `Stack` 에서 해당하는 `resource` 를 삭제할때 `CloudFormation` 이 `Resource` 를  
      어떻게 처리할지 지시하는데 사용된다.  
      예를들어, 삭제시 **_데이터 손실을 방지_** 하고자, 삭제전에 `resource` 를 백업하기 위해  
      **_삭제 동작을 변경_** 할수있다.
 
-- [UpdatePolicy](#): `Stack` 에서 해당하는 `resource` 를 업데이트 할때 `CloudFormation` 이 `Resource` 를  
+- **UpdatePolicy**: `Stack` 에서 해당하는 `resource` 를 업데이트 할때 `CloudFormation` 이 `Resource` 를  
      어떻게 처리할지 지시하는데 사용된다.  
      이는 **_리소스를 업데이트하는 과정을 제어하여, 리소스가 중단되지 않고도 안정적으로 업데이트_** 되도록 한다.
 
@@ -461,7 +477,7 @@ Conditions:
      `CloudFormation` 이 `Resource` 를 어떻게 처리할지 지시한다.  
      업데이트중 **_리소스가 삭제되지 않거나, 삭제 되더라도 스냅샷을 생성하도록 하여 데이터 손실을 방지_** 한다.
 
-#### DeletionPolicy
+### :eyes: DeletionPolicy
 
 `Stack` 삭제시, 중요한 `Resource` 가 실수로 삭제되어서는 안된다.
 `EnableTerminationProtection` 을 사용하여, `RDS` 및 `EC2` 의 삭제를 보호할수 있다.
@@ -482,11 +498,11 @@ Resources:
 
 이는 다음의 `3` 가지 옵션이 존재한다.
 
-- [Retain](#retain): 리소스를 삭제하지 않고 보존.
-- [Snapshot](#sanpshot): 리소스 삭제전에 스냅샷 생성.
-- [Delete](#delete): 기본값으로 리소스를 삭제
+- [Retain](#eyes-retain): 리소스를 삭제하지 않고 보존.
+- [Snapshot](#eyes-sanpshot): 리소스 삭제전에 스냅샷 생성.
+- [Delete](#eyes-delete): 기본값으로 리소스를 삭제
 
-##### Retain
+### :eyes: Retain
 
 만약 `Stack` 삭제시 `EC2` 를 삭제하고 싶지 않다면 다음처럼도 가능하다.
 
@@ -495,7 +511,7 @@ Resources:
     MyEC2Instance:
         Type: AWS::EC2::Instance
         DeletionPolicy: Retain
-        Properties: ...
+        Properties:...
 ```
 
 > 물론 `EnableTerminationProtection` 과 `DeletionPolicy: Retain` 과는 목적자체가 다르다.
@@ -505,7 +521,7 @@ Resources:
 > 반면, `DeletionPolicy: Retain` 은 `CloudFormation` 을 통핸 `Stack` 에서 삭제시에만 해당 `Resource` 삭제를
 > 보호한다.
 
-##### Sanpshot
+### :eyes: Sanpshot
 
 테스트 단계가 끝나면 필요 없는 테스트 `Stack` 을 만들었지만 동일한 데이터 구조를 다시 만들고 싶지 않을수 있다.
 프로덕션 환경으로 옮기고 싶은 데이터가 있을수 있으므로 `DB Dump` 가 필요할수 있다.
@@ -534,12 +550,12 @@ Resources:
 - `AWS::RDS::DBInstance`
 - `AWS::RDS::Cluster`
 
-##### Delete
+### :eyes: Delete
 
 `Delete` 는 간단하다. `Stack` 삭제시 해당 `Resource` 도 같이 삭제된다.
 이는 기본값이다.
 
-### Outputs
+### :eyes: Outputs
 
 `Outputs` 는 `Stack` 이 생성된후 `Stack` 에서 내보내는 값이다.
 이렇게 내보내진 값은, `Stack` 에서 생성된 리소스를 다른 `Stack` 에서 참조하여 사용도 가능하다.
@@ -550,7 +566,7 @@ Resources:
 > `Outputs` 는 `read` 권한이 있는 모든 사람이 엑세스할수 있으므로, 이렇게 노출하는 것을 위험하다.  
 > 반드시, 권한있는 사용자만 `stack` 에 접근할수 있도록 해야 한다.
 
-## 이미 존재하는 `Stack` 참조
+## 📌 이미 존재하는 `Stack` 참조
 
 기존에 존재하는 `Stack` `Resource` 를 관리하는 공유 책임 모델(`Shared responsibility models`)이 적용된 대규모 환경에서,
 여러 `Stack` 상의 `Resource` 나 `Resource Attributes` 를 공유해야 하는 상황이 발생한다.
@@ -703,23 +719,23 @@ DbCredentials:
 
 이 경우 어떠한 코드가 더 깔끔한지에 따라 선택적으로 사용가능하다.
 
-## AWS pseudo parameters
+## 📌 AWS pseudo parameters
 
 이 매개변수들은 `AWS` 에서 제공하는 특벌한 매개변수들이다.
 다음은 `CloudFormaion` 에서 제공되는 `peseudo parameters` 이다.
 
-- [AWS::AccountId](#awsaccountid)
-- [AWS::NotificationARNs](#awsnotificationarns)
-- [AWS::NoValue](#awsnovalue)
-- [AWS::Region](#awsregion)
-- [AWS::StackId](#awsstackid)
-- [AWS::StackName](#awsstackname)
-- [AWS::URLSuffix](#awsurlsuffix)
-- [AWS::Partition](#awspartition)
+- [AWS::AccountId](#eyes-awsaccountid)
+- [AWS::NotificationARNs](#eyes-awsnotificationarns)
+- [AWS::NoValue](#eyes-awsnovalue)
+- [AWS::Region](#eyes-awsregion)
+- [AWS::StackId](#eyes-awsstackid)
+- [AWS::StackName](#eyes-awsstackname)
+- [AWS::URLSuffix](#eyes-awsurlsuffix)
+- [AWS::Partition](#eyes-awspartition)
 
 > [peseudo parameters](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/pseudo-parameter-reference.html) 에서 확인가능하다.
 
-### AWS::AccountId
+### :eyes: AWS::AccountId
 
 `IAM principal` 즉 주체를 `AccountId` 로 사용하는 경우에 사용한다.
 동시에, `AWS` 계정 `Id` 를 노출하는 것은 보안상 위험하다.
@@ -740,7 +756,7 @@ Resources:
                       Action:
                         - sts:AssumRole
                       Principal:
-                        AWS: !Ref AWS::AccountId
+                        AWs:!Ref AWS::AccountId
 ```
 
 이를 통해 `AWS::Role` 생성시, 적용되는 신뢰기반 정책의 `principal` 은
@@ -766,7 +782,7 @@ Resources:
                       Action:
                         - sts:AssumRole
                       Principal:
-                        AWS: !Sub 
+                        AWs:!Sub 
                             - "arn:aws:iam::${AWS::AccountId}:user/${awsUsername}"
 ```
 
@@ -774,7 +790,7 @@ Resources:
 
 위 같은경우, `Principal` 이 `iam` 계정에 속하는, 특정 `user` 가 된다.
 
-### AWS::NotificationARNs
+### :eyes: AWS::NotificationARNs
 
 현재 `Stack` 에 대한 `Notification` `ARN` 목록을 반환한다.
 > 이는 `Stack` 과 연결된 `Amazon SNS` 에 대한 `ARN` 목록이다.
@@ -811,7 +827,7 @@ myASGrpOne:
 
 `autoscaling` 시 `EC2 Instance` 가 `Launch` 될때와 `Launch Error` 가 발생할때를 포착하여 알림을 보낸다.
 
-### AWS::NoValue
+### :eyes: AWS::NoValue
 
 `AWS::NoValue` 는 `null` 가 동일하다.
 이는 조건함수와 같이 사용하지 않는한, 사용용도는 많지 않다.
@@ -841,7 +857,7 @@ Resources:
         Type: AWS::RDS::DBInstance
         Properties:
             AllocatedStorage: "5"
-            DBInstanceClass: "db.t3.micro"
+            DBInstanceClass:"db.t3.micro"
             Engine: MySQL
             EngineVersion: "5.7"
             DBSnapshotIdentifier:
@@ -851,7 +867,7 @@ Resources:
                     - !Ref AWS::NoValue
 ```
 
-### AWS::Region
+### :eyes: AWS::Region
 
 `Resource` 사용시 `AWS::Region` 을 지정할수 있다.
 `AWS` 에서 `Region` 을 하드코딩하여 작성할때, `cfn lint` 는 `Error` 를
@@ -884,7 +900,7 @@ Resources:
 
 `CloudFormation` 은 `Stack` `Region` 에 `CloudWatch` 로그 그룹을 생성한다.
 
-### AWS::StackId
+### :eyes: AWS::StackId
 
 `aws coloudformation create-stack` 명령을 내릴때, 지정된 `Stack ID` 를
 반환한다.
@@ -897,19 +913,19 @@ Resources:
 참조할수 있도록 한다.
 
 ```yml
-Resources:  
+Resources: 
   MyBucket:  
     Type: AWS::S3::Bucket  
-    Properties:  
+    Properties: 
       BucketName: !Sub "my-bucket-${AWS::AccountId}-${AWS::Region}"  
-      Tags:  
+      Tags: 
         - Key: StackId  
           Value: !Ref AWS::StackId
 ```
 
 이는, `Tag` 를 사용하여, 어떠한 `Stack` 에서 생성된 `resource` 인지, `StackId` 명시할때 많이 사용한다.
 
-### AWS::StackName
+### :eyes: AWS::StackName
 
 `aws cloudformation create-stack` 명령으로 지정된 `Stack name` 을 반환한다.
 
@@ -918,9 +934,9 @@ Resources:
 >
 > - teststack
 
-`AWS::StackName` 은 [리소스태킹](#리소스-태깅), [리소스 이름지정](#리소스-이름지정), [로그그룹](#로그그룹), [IAM 역할 생성](#iam-역할-정책에-스택이름-포함) 등에 많이 사용된다.
+`AWS::StackName` 은 [리소스태킹](#eyes--리소스-태깅), [리소스 이름지정](#eyes--리소스-이름지정), [로그그룹](#eyes--로그그룹), [IAM 역할 생성](#eyes--iam-역할-정책에-스택이름-포함) 등에 많이 사용된다.
 
-#### 리소스 이름지정
+### :eyes: # 리소스 이름지정
 
 다음은, `resource` 이름지정의 예시이다.
 
@@ -941,7 +957,7 @@ Resources:
 `Bucket` 의 이름은 고유해야 하므로, 이렇게 하면 고유한 `BucketName` 을
 지정할수 있다.
 
-#### 리소스 태깅
+### :eyes: # 리소스 태깅
 
 여러 `Stack` 에서 동일한 유형의 `Resource` 를 만들때, `Resource` 에 `Tag` 를 걸어 `Stack name` 을 포함시킨다.
 
@@ -958,29 +974,29 @@ Resources:
                   Value: !Ref AWS::StackName
 ```
 
-#### 로그그룹
+### :eyes: # 로그그룹
 
 `CloudWatch` 에 로그그룹을 생성할때, `resource` 에 대한 고유 식별자로 `StackName` 을 사용할수 있다.
 
 ```yml
-Resources:  
+Resources: 
   MyLogGroup:  
     Type: AWS::Logs::LogGroup  
-    Properties:  
+    Properties: 
       LogGroupName: !Sub "/aws/lambda/${AWS::StackName}-log-group"
 ```
 
 이렇게 어떤 `Stack` 의 로그 그룹인지 분별 가능하다.
 
-#### IAM 역할 정책에 스택이름 포함
+### :eyes: # IAM 역할 정책에 스택이름 포함
 
 `IAM Role` 생성시, `StackName` 을 포함하여, 어떤 `Stack` 의 역할인지 분별가능하게 만든다.
 
 ```yml
-Resources:  
+Resources: 
   MyIamRole:  
     Type: AWS::IAM::Role  
-    Properties:  
+    Properties: 
       RoleName: !Sub "${AWS::StackName}-role"  
       AssumeRolePolicyDocument:  
         Version: '2012-10-17'  
@@ -991,7 +1007,7 @@ Resources:
             Action: sts:AssumeRole
 ```
 
-### AWS::URLSuffix
+### :eyes: AWS::URLSuffix
 
 `Domain` 의 접미사(`Suffix`) 를 반환한다.
 접미사는 일반적으로  `amazonaws.com` 이지만, `Region` 에 따라 다를수 있다.
@@ -1026,7 +1042,7 @@ Resources:  EcsTaskExecutionRole:
 
 > `cfn lint` 에서도 `error` 를 뿜뿜한다.
 
-### AWS::Partition
+### :eyes: AWS::Partition
 
 `ARN` 작성시, 다음처럼 작성한다.
 
@@ -1035,15 +1051,15 @@ Resources:  EcsTaskExecutionRole:
 여기서, `aws` 부분은 `partition` 을 말한다.
 이를 `namespace` 로 이해하면 편하다.
 
-이렇나 `partition` 은 앞의 [AWS::URLSuffix](#awsurlsuffix) 와 같이, 중국 리전 혹은 `GovCloud Region` 같은 경우, 전혀 다른 `partition` 을 사용할수 있다.
+이렇나 `partition` 은 앞의 [AWS::URLSuffix](#eyes-awsurlsuffix) 와 같이, 중국 리전 혹은 `GovCloud Region` 같은 경우, 전혀 다른 `partition` 을 사용할수 있다.
 
 > 중국은, `aws-cn` 이고, `GovCloud Region` 은 `aws-us-gov` 처럼 `partition` 을 작성해야 한다.
 
 이러한 상황이 있을수 있으므로, 작성시 `AWS::Partition` 으로 명시하기를 권장한다.
 
-## Parameter Store 와 Secrets Manager
+## 📌 Parameter Store 와 Secrets Manager
 
-`JSON` 으로 관리되는 `Parameters`([Parameters](#parameters) 혹은 [Mappings](#mappings)) 만 살펴보았다.
+`JSON` 으로 관리되는 `Parameters`([Parameters](#-parameters) 혹은 [Mappings](#-mappings)) 만 살펴보았다.
 
 보통은 `VCS`(`Version Conrol System`) 에서 `Parameter` 를 유지하는것이
 `IaaC` 의 일반적인 관행이지만, 이로인한 추가적인 복잡성이 발생한다.
@@ -1110,13 +1126,13 @@ Outputs:
 
 이렇게 참조하는 방식은 총 2가지가 있다.
 
-1. [`Parameters` 에서 참조](#parameters-에서-참조)
+1. [`Parameters` 에서 참조](#eyes-parameters-에서-참조)
 
-2. [Resource 선언 참조](#resource-선언-참조)
+2. [Resource 선언 참조](#eyes-resource-선언-참조)
 
-### Parameters 에서 참조
+### :eyes: Parameters 에서 참조
 
-[Parameters](#parameters) 섹션에서 `SSM Parameter` 를 참조하면,
+[Parameters](#-parameters) 섹션에서 `SSM Parameter` 를 참조하면,
 `Stack` 생성시 사용자가 값을 입력하거나, 다른 `Stack` 이나 `SSM Parameter Store` 에서 값을 가져와서 참조할수 있다.
 
 `SSM Parameter Store` 에 저장된 값을 가져오면, 사용자가 직접 입력할 필요없이 해당 값을 참조할수 있다.
@@ -1124,7 +1140,7 @@ Outputs:
 이를 참조하기 위해서는 `Parameter` `Type` 을 `AWS::SSM:Parameters::Value<Type>` 으로 지정하며, `Defalut` 값을 사용하여 `SSM Parameter Store` 에 저장된 `Parameter` 이름을 작성해준다.
 
 ```yml
-Parameters:  
+Parameters: 
   WebTierDesierdSizeParameter:  
     Type: AWS::SSM::Parameter::Value<String>  
     Default: "/my-app/web/asg-desired-size"  
@@ -1139,9 +1155,9 @@ Parameters:
 
 이렇게 작성하면, `Stack` 실행시 `WebTireDesSizeParameter` 는 `/my-app/web/desired-size` `Parameter` 의 값을 자동으로 참조하고, `Resource` 선언시 `Parameter` 참조를 통해 이 값을 사용할수있다.
 
-### Resource 선언 참조
+### :eyes: Resource 선언 참조
 
-앞의 [Parameters 에서 참조](#parameters-에서-참조) 하는 방식은 번거로울수 있다.
+앞의 [Parameters 에서 참조](#eyes-parameters-에서-참조) 하는 방식은 번거로울수 있다.
 `javascript` 에서 `template literal` 이 나오기전에, 일일히 `+` 연산자를 사용해 문자열을 조합했다...
 
 하지만 `javascript` 에서 `template literal` 방식이 나온후, 문자열에 `변수` 값을 넣어 바로 처리할수 있어, 개발방식이 굉장히 편해졌다.
@@ -1151,10 +1167,10 @@ Parameters:
 그래서, 마치 `template literal` 처럼, `Resource` 에서 선언시 `SSM Parameter Store` 에서 `Parameter` 를 직접 참조할수 있는 방식을 제공한다.
 
 ```yml
-Resources:  
+Resources: 
   WebTierAsg:  
     Type: AWS::AutoScaling::AutoScalingGroup  
-    Properties:  
+    Properties: 
         DesiredCapacity: !Sub 
             - "{{resolve:ssm:${parameter}:1}}"
             # Output 에서 가져온 WebTireDesiredSize 
@@ -1178,28 +1194,30 @@ Resources:
 > - `reference-Key` `block` 은 `SSM Parameter Store` 에 저장된 참조 `key` 이다.
 > - `version` `block` 은 `SSM Parameter Store` 에 저장된 `Parameter` 의 `Version` 이다.
 >
->> [Parameter Store 와 Secret Manager](#parameter-store-와-secrets-manager) 에서 `Version Contorl Service` 도 같이 지원한다고 했다. 이는 `Version Control` 을 위한 버전 명이다.
+>> [Parameter Store 와 Secret Manager](#-parameter-store-와-secrets-manager) 에서 `Version Contorl Service` 도 같이 지원한다고 했다. 이는 `Version Control` 을 위한 버전 명이다.
 
-### SSM Parameter Store 제한사항
+### :eyes: SSM Parameter Store 제한사항
 
 `SSM Parameter Store` 에 최신 `version` 의 `Parameter` 를 참조할수 없다.
 `Parameter` 를 변경하는 경우에도 `resolve` `block` 에서 해당 버전을 변경해야 한다.
 
 > 여기서 말하는 `version` 은 앞에 말한 `resolve:ssm:reference-key:version` 에서 사용되는 `version block` 이다.
 >
-> 만약, [Parameters 에서 참조](#parameters-에서-참조) 방식으로 참조하면, 기본적으로 처음 정의된 버전(`1`) 을 참조하며, 변경된 버전을 자동으로 참조안한다.
+> 만약, [Parameters 에서 참조](#eyes-parameters-에서-참조) 방식으로 참조하면, 기본적으로 처음 정의된 버전(`1`) 을 참조하며, 변경된 버전을 자동으로 참조안한다.
 >
-> 반면, [Resource 선언 참조](#resource-선언-참조) 같은 경우, `version` `block` 에 꼭 `version` 을 명시해야 한다.
+> 반면, [Resource 선언 참조](#eyes-resource-선언-참조) 같은 경우, `version` `block` 에 꼭 `version` 을 명시해야 한다.
 ---
 > :anger: 이거 약간 애매하다. [Parameter Store에서 파라미터 버전으로 작업](https://docs.aws.amazon.com/ko_kr/systems-manager/latest/userguide/sysman-paramstore-versions.html) 에서는 항상 최신 파라미터 버전을 사용한다고 말한다.
 >
 > 그런데 일단 책에서는 `Parameter version` 에 대해서 최신버전을 가져오지 못한다고 말하고 있다..
 >
 > 이는 나중에 실험해보고, 조금더 작성해 보아야 겠다.
-> 일단, `version` 명을 명시할수 있는 [Resource 선언 참조](#resource-선언-참조) 로 작업하는것으로!
+> 일단, `version` 명을 명시할수 있는 [Resource 선언 참조](#eyes-resource-선언-참조) 로 작업하는것으로!
 >
->> 참고로 [Parameters 에서 참조](#parameters-에서-참조) 는 `version` 을 명시할수 없다고 한다..
+>> 참고로 [Parameters 에서 참조](#eyes-parameters-에서-참조) 는 `version` 을 명시할수 없다고 한다..
 ---
+
+### :eyes: Secret Manager
 
 다음은, `Secret Manager` 를 통해 `DB password` 를 작성하는 예시이다.
 이는 노출할 필요가 없으니, `Parameter Store` 를 사용하지 않는다.
@@ -1249,4 +1267,92 @@ Resources:
 
 `SSM Parameter Store` 와는 다르게 `Secrets Manager` 는 버전을 지정하지 않고, 참조하려는 실제 `key` 를 지정한다.
 
-이를 통해 어떠한 방식으로, `resource` 를 참조하는지 알수 있다.
+## 📌 CloudFormaion Language Extentions
+
+`CloudFormation` `Template` 는 `YAML` 혹은 `JSON` 으로 작성하지만, `DSL` (`Domain Spacific Language`) 라 한다.
+
+`CloudFormation` 은 변수 참조를 위한 `Fn::Ref`, `class` 속성을 얻기 위한 `Fn::GetAtt`, `CIDR` `range` 를 생성하기 위한 `Fn::Cidr`, 기타등등.. 여러 내장함수들을 사용하여, 작성할수 있다.
+
+하지만, 이러한 내장 함수만으로 작성하기 부족한 부분이 많다.
+그러므로, 더 유용한 확장 내장 함수 및 기능을 제공하는 `AWS CloudFormation` 전용 `Extentions` 을 제공한다.
+
+사용법은 간단하다.
+
+```yml
+# 최상위 섹션 `Transform` 에 `AWS::LanguageExtensions` 만 추가하면 된다.
+Transform: AWS::LanguageExtensions
+```
+
+그럼 어떠한 점이 불편해서 이러한 `Extentions` 를 만들었는지 책에 나온 간단한 예시를 보도록 한다.
+다음은, `AWS::SecretsManager::Secret` 를 사용하는 예제이다.
+
+```yml
+# database.yamlResources:
+Transform: AWS::LanguageExtensions
+Resources:
+    HardcodedDatabaseSecret:
+        Condition: TestEnv
+        Type: "AWS::SecretsManager::Secret"
+        Properties:
+            Description: "Database credentials"
+            # Do not do this in production!
+            SecretString: '{"username":"dbuser","password":"dbpassword"}'
+```
+
+보면, `SecretString` 의 값을 작성하는데, `JSON` 방식의 문자열을 작성해야 해서
+`'{"username":"dbuser","password":"dbpassword"}'` 처럼 작성해야 하는 불편함을 가진다.
+
+> 기존의 `YMAL` 에서 제공하는 객체 선언방식은 제공되지 않는다.
+
+```yml
+#  즉 이렇게 작성하면 안된다.
+SecretString:
+    username: dbuser
+    password: dbpassword
+```
+
+`JSON` 포멧은 더 불편하다.
+
+```json
+{  
+    "Resources": {
+        "MySecret": {
+                "Type": "AWS::SecretsManager::Secret",
+                "Properties": {
+                "SecretString": "{\"username\":\" dbuser \",\"password\":\" dbpassword \"}"
+            }
+        }
+    }
+}
+```
+
+`JSON` 은 `'` 로 감싸주지 못하니, `\"` 를 통해 쌍따옴표를 `escape` 하는것을 볼수 있다. :cursing_face:
+
+이러한 불편함을 없애주기 위해 `AWS` 는 `CloudFormaton` 에 포함되지 않는 유용한 내장함수와 기타 기능을 사용할수 있도록, 확장 가능한 [AWS::LanguageExtensions](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/transform-aws-languageextensions.html) 를 제공한다. 🥰
+
+확장기능에서 제공하는 [Fn::ToJsonString](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ToJsonString.html) 을 사용하면 `JSON` 객체를 문자열로 변환하여 힘들게 구성하지 않아도 된다. 👍
+
+```yml
+// database.yamlResources:
+Transform: AWS::LanguageExtensions
+Resources:
+  HardcodedDatabaseSecret:
+    Condition: TestEnv
+    Type: "AWS::SecretsManager::Secret"
+    Properties:
+      Description: "Database credentials"
+      SecretString:
+        Fn::ToJsonString:
+          username: "dbuser"
+          # Do not do this in production!
+          password: "dbpassword"
+```
+
+굉장히 편해졌다.
+[AWS::LanguageExtensions](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/transform-aws-languageextensions.html)는 현재 다음과 같은 속성을 지원한다
+
+:bulb: [Fn::ForEach](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-foreach.html)
+:bulb: [Fn::Length](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-length.html)
+:bulb: [Fn::ToJsonString](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ToJsonString.html)
+:bulb: [Fn::FindInMap enhancements](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/function-refs-in-policy-attributes.html)
+:bulb: [DeletionPolicy 및 UpdateReplacePolicy 속성의 내장 함수 참조](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-findinmap-enhancements.html)

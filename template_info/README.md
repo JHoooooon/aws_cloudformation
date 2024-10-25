@@ -8,17 +8,30 @@
 ## 📌 목록
 
 📌 [AWSTemplateFormatVersion](#-awstemplateformatversion)
+
 📌 [Description](#-description)
+
 📌 [Metadata](#-metadata)
+
 📌 [Parameters](#-parameters)
+
 📌 [Mappings](#-mappings)
+
 📌 [Conditions](#-conditions)
+
 📌 [Transform](#-transform)
+
 📌 [Resources](#-resources)
+
 📌 [이미 존재하는 Stack 참조](#-이미-존재하는-stack-참조)
+
 📌 [AWS pseudo parameters](#-aws-pseudo-parameters)
+
 📌 [Parameter Store 와 Secerts Manager](#-parameter-store-와-secrets-manager)
+
 📌 [CloudFormation Language Extensions](#-cloudformaion-language-extentions)
+
+🗒️ [책에서 말하는 추가 참고사항](#spiral_notepad-책에서-말하는-추가-참고-사항)
 
 ## 📌 AWSTemplateFormatVersion
 
@@ -104,8 +117,8 @@ Resources:
 | Number                       | 정수 또는 부동소수점<br/>`Ref` 내장함수를 사용하여, 참조시 파라미터값은 문자열이 된다.                                                                                         |
 | List\<Number\>               | 쉼표로 구분된 정수 또는 부동소수점의 배열.<br/>`Ref` 내장 함수를 사용하여, 참조시 파라미터 값은 문자열 배열이 된다. <br/> `"80, 20" 을 지정하면, Ref 는 ["80", "20"] 이 된다.` |
 | CommaDelimitedList           | 쉼표로 구분된 리터럴 문자열 배열.<br/>총 문자열 수는 총 쉼표수보다 하나 더 많다.<br/>`"test,dev,prod"` 는 `Ref` 내장 함수를 통해 `["test", "dev", "prod"]` 가 된다.            |
-| AWS 특정 파라미터 type       | `AWS` 관련 파라미터 타입                                                                                                                                                       |
-| System Manager 파라미테 type | `Systems Manager Parameter` 타입 참조                                                                                                                                          |
+| AWS 특정 파라미터 type       | [AWS specific parameter types](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-specific-parameter-types.html) 참조 |
+| System Manager Parameter type | [Parameter Store 와 Secerts Manager](#-parameter-store-와-secrets-manager) 참조 |
 
 ### 👀Parameters 속성
 
@@ -1356,3 +1369,19 @@ Resources:
 :bulb: [Fn::ToJsonString](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ToJsonString.html)
 :bulb: [Fn::FindInMap enhancements](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/function-refs-in-policy-attributes.html)
 :bulb: [DeletionPolicy 및 UpdateReplacePolicy 속성의 내장 함수 참조](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-findinmap-enhancements.html)
+
+---
+
+## :spiral_notepad: 책에서 말하는 추가 참고 사항
+
+- [CloudFormation Tempalte 섹션](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/template-anatomy.html)
+
+- [CloudFormation Dynamic references 섹션](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/dynamic-references.html)
+
+- [CloudFormation Deletion Policy 속성](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html)
+
+- [CloudFormation sample template 참조](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)
+
+- [AWS::LanguageExtentions Transform 참조](https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/transform-aws-languageextensions.html)
+
+---
